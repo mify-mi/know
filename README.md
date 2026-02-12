@@ -1,99 +1,86 @@
-import random
+print("=== 本格 性格診断アプリ ===")
+print("10個の質問に直感で答えてください！\n")
 
-# --- クイズデータ ---
-quiz_data = {
-    "かんたん": [
-        ("パンダの主食は？",
-         ["1. さかな", "2. たけ", "3. にく", "4. くだもの"], 2),
+leader = 0
+strategist = 0
+support = 0
+creator = 0
 
-        ("日本の首都は？",
-         ["1. 大阪", "2. 京都", "3. 東京", "4. 名古屋"], 3),
-    ],
+questions = [
+    ("Q1. 新しいことに挑戦するのは？",
+     "1. ワクワクする", "2. 計画を立ててから", "3. みんなと一緒なら", "4. 気分次第"),
 
-    "ふつう": [
-        ("地球は太陽のまわりを何日で一周する？",
-         ["1. 約100日", "2. 約365日", "3. 約200日", "4. 約30日"], 2),
+    ("Q2. グループ活動では？",
+     "1. まとめ役", "2. 作戦担当", "3. サポート役", "4. アイデア担当"),
 
-        ("人間の骨の数は約いくつ？",
-         ["1. 約50本", "2. 約100本", "3. 約206本", "4. 約500本"], 3),
-    ],
+    ("Q3. 失敗したら？",
+     "1. すぐ再挑戦", "2. 原因分析する", "3. 周りに相談", "4. 気にしない"),
 
-    "むずかしい": [
-        ("世界で一番深い海溝は？",
-         ["1. マリアナ海溝", "2. 日本海溝", "3. トンガ海溝", "4. フィリピン海溝"], 1),
+    ("Q4. 好きな科目は？",
+     "1. 体育", "2. 数学", "3. 国語", "4. 美術"),
 
-        ("光の速さは1秒間に約何km？",
-         ["1. 約3万km", "2. 約30万km", "3. 約300km", "4. 約3000km"], 2),
-    ]
-}
+    ("Q5. 決断は？",
+     "1. 即決", "2. データ重視", "3. みんなの意見", "4. 直感"),
 
-# --- 問題追加機能 ---
-def add_question():
-    print("\n--- 新しい問題を追加 ---")
-    level = input("難易度を選んでください（かんたん/ふつう/むずかしい）: ")
+    ("Q6. 友達から言われるのは？",
+     "1. 行動力ある", "2. 頭がいい", "3. 優しい", "4. 個性的"),
 
-    if level not in quiz_data:
-        print("その難易度はありません！")
-        return
+    ("Q7. トラブル発生！",
+     "1. 仕切る", "2. 解決策を考える", "3. 仲裁する", "4. 空気を変える"),
 
-    question = input("問題文を入力: ")
-    choices = []
-    for i in range(4):
-        choice = input(f"{i+1}番の選択肢: ")
-        choices.append(f"{i+1}. {choice}")
+    ("Q8. 将来は？",
+     "1. 起業家", "2. 研究者", "3. 先生", "4. アーティスト"),
 
-    correct = int(input("正解の番号を入力（1～4）: "))
+    ("Q9. 旅行なら？",
+     "1. アクティブ旅", "2. 計画旅行", "3. みんなで楽しく", "4. 気まま旅"),
 
-    quiz_data[level].append((question, choices, correct))
-    print("✅ 追加しました！")
+    ("Q10. 大事なのは？",
+     "1. 行動力", "2. 論理", "3. 思いやり", "4. センス")
+]
 
-# --- メイン処理 ---
-print("=== 豆知識クイズゲーム ===")
+for q in questions:
+    print("\n" + q[0])
+    print(q[1])
+    print(q[2])
+    print(q[3])
+    print(q[4])
 
-while True:
-    print("\n1. クイズを始める")
-    print("2. 問題を追加する")
-    print("3. 終了")
-    menu = input("番号を選んでください: ")
+    ans = input("番号を選んでください（1〜4）: ")
 
-    if menu == "1":
-        level = input("難易度を選んでください（かんたん/ふつう/むずかしい）: ")
+    if ans == "1":
+        leader += 1
+    elif ans == "2":
+        strategist += 1
+    elif ans == "3":
+        support += 1
+    elif ans == "4":
+        creator += 1
 
-        if level not in quiz_data:
-            print("その難易度はありません！")
-            continue
 
-        questions = random.sample(quiz_data[level], len(quiz_data[level]))
-        score = 0
+total = leader + strategist + support + creator
 
-        for i, quiz in enumerate(questions):
-            print(f"\n問題 {i+1}")
-            print(quiz[0])
+print("\n=== 診断結果 ===")
 
-            for choice in quiz[1]:
-                print(choice)
+print(f"🔥 リーダー型: {leader/total*100:.1f}%")
+print(f"🧠 戦略家型: {strategist/total*100:.1f}%")
+print(f"🌿 協調型: {support/total*100:.1f}%")
+print(f"🎨 クリエイター型: {creator/total*100:.1f}%")
 
-            answer = int(input("番号で答えてください: "))
 
-            if answer == quiz[2]:
-                print("⭕ 正解！")
-                score += 1
-            else:
-                print("❌ 不正解！")
+max_type = max(leader, strategist, support, creator)
 
-        total = len(questions)
-        percent = (score / total) * 100
+if max_type == leader:
+    print("\nあなたは『🔥リーダー型』！")
+    print("決断力と行動力が武器。周囲を引っ張る存在です。")
 
-        print("\n=== 結果 ===")
-        print(f"正解数: {score}/{total}")
-        print(f"正解率: {percent:.1f}%")
+elif max_type == strategist:
+    print("\nあなたは『🧠戦略家型』！")
+    print("分析力が高く、冷静な判断ができる頭脳派。")
 
-    elif menu == "2":
-        add_question()
+elif max_type == support:
+    print("\nあなたは『🌿協調型』！")
+    print("思いやりがあり、周囲を支える大切な存在。")
 
-    elif menu == "3":
-        print("ゲーム終了！")
-        break
-
-    else:
-        print("正しい番号を選んでください。")
+else:
+    print("\nあなたは『🎨クリエイター型』！")
+    print("感性豊かで発想力が光るアイデアマン！")
